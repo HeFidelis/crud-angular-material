@@ -17,8 +17,28 @@ export class ClienteService {
     localStorage.setItem(ClienteService.REPO_CLIENTES, JSON.stringify(storage));
   }
 
-  pesquisarClientes(nome: string) : Cliente[] {
-    return this.obterStorage();
+  pesquisarClientes(nomeBusca: string) : Cliente[] {
+
+    const clientes = this.obterStorage();
+
+    if(!nomeBusca){
+      return clientes;
+    }
+
+    const normalizar = (texto: string) =>
+    texto
+      .toLowerCase()
+      //Essa parte separa os acentos das letras.
+      .normalize("NFD")
+      //Regex
+      //Remova todos os caracteres de acento Unicode.
+      .replace(/[\u0300-\u036f]/g, "");
+
+    const busca = normalizar(nomeBusca);
+
+    return clientes.filter(cliente =>
+    cliente.nome && normalizar(cliente.nome).includes(busca)
+    );
   }
 
   private obterStorage() : Cliente[] {
