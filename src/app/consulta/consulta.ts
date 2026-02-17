@@ -1,9 +1,10 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { MatInputModule} from '@angular/material/input'
 import { MatCardModule} from '@angular/material/card'
 import { FlexLayoutModule} from '@angular/flex-layout'
 import { MatIconModule} from '@angular/material/icon'
+import { MatSnackBar } from '@angular/material/snack-bar'
 import { FormsModule} from '@angular/forms'
 import { MatTableModule} from '@angular/material/table'
 import { MatButtonModule } from '@angular/material/button';
@@ -31,6 +32,7 @@ export class Consulta implements OnInit {
   nomeBusca: string = '';
   listaClientes: Cliente[] = [];
   colunasTable: string[] = ["id", "nome", "cpf", "dataNascimento", "email", "acoes"];
+  snack: MatSnackBar = inject(MatSnackBar);
 
   constructor(
     private service: ClienteService,
@@ -58,6 +60,7 @@ export class Consulta implements OnInit {
   deletar(cliente: Cliente){
     this.service.deletar(cliente);
     this.listaClientes = this.service.pesquisarClientes('');
+    this.snack.open('Item deletado com sucesso!', 'Ok');
   }
 
 }
