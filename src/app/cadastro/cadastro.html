@@ -67,6 +67,21 @@
               </mat-form-field>
             </div>
           </div>
+
+          <div fxLayout="row" fxLayoutAlign="start" fxLayoutGap="16px">
+            <div fxLayout="column" fxFlex="400px">
+              <mat-form-field class="full-width">
+                <mat-label>UF: *</mat-label>
+                <mat-select>
+                  @for (uf of estados; track uf.sigla) {
+                    <mat-option [value]="uf.sigla">
+                      {{ uf.sigla }}
+                    </mat-option>
+                  }
+                </mat-select>
+              </mat-form-field>
+            </div>
+          </div>
         </mat-card-content>
         <mat-card-actions>
           @if (!atualizando) {

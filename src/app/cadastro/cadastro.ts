@@ -7,12 +7,14 @@ import { MatInputModule} from '@angular/material/input'
 import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
 import { MatSnackBar } from '@angular/material/snack-bar'
+import { MatSelectModule } from '@angular/material/select';
 import { Cliente } from './cliente';
 import { ClienteService } from '../cliente.service';
 import { ActivatedRoute, Route, Router } from '@angular/router';
 import { NgxMaskDirective, provideNgxMask } from 'ngx-mask'
 import { Brasilapi } from '../brasilapi.service';
 import { Estado, Municipio } from '../brasilapi.models';
+import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-cadastro',
@@ -24,6 +26,8 @@ import { Estado, Municipio } from '../brasilapi.models';
     MatInputModule,
     MatIconModule,
     MatButtonModule,
+    MatSelectModule,
+    CommonModule,
     NgxMaskDirective
 ], providers: [
   provideNgxMask()
@@ -62,12 +66,14 @@ export class Cadastro implements OnInit {
     this.carregarUFs();
   }
 
-  carregarUFs(){
-    // observable subscriber
+  carregarUFs() {
     this.brasilApiService.listarUFs().subscribe({
-      next: listaEstados => this.estados = listaEstados,
-      error: erro => console.log("ocorreu um erro: ", erro)
-    })
+      next: (listaEstados) =>
+        (this.estados = listaEstados.sort((a, b) =>
+          a.sigla.localeCompare(b.sigla)
+        )),
+      error: (erro) => console.log('ocorreu um erro: ', erro),
+    });
   }
 
   salvar(){
